@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rifa de números</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<style>
+	.rifa {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: auto;
+  max-height: 50vh;
+}
+
+.numeros {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-gap: 10px;
+  margin: 20px 0;
+}
+
+.numeros div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  font-size: 20px;
+  color: #444;
+  background-color: #fff;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.numeros div:hover {
+  background-color: #ddd;
+}
+
+.numeros div.selecionado {
+  background-color: #00bcd4;
+  color: #fff;
+}
+
+.informacoes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 20px;
+}
+
+.informacoes p {
+  margin: 10px 0;
+}
+
+.informacoes button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 20px;
+  color: #fff;
+  background: linear-gradient(to right, #00bcd4, #4caf50);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.informacoes button:hover:not(:disabled) {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.informacoes button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+
+</style>
+</head>
+<body>
+	
+
+  <div id="app">
+	  <h2 class="text-center">RIFA 1000</h2>
+    <div class="rifa">
+		<div class="numeros">
+		  <div v-for="numero in 1000" 
+			   :class="{ selecionado: numeros.includes(numero) }" 
+			   @click="selecionarNumero(numero)">
+			{{ numero }}
+		  </div>
+		</div>
+		
+	  </div>
+	  <div class="informacoes">
+		<p>{{ quantidadeNumeros }} números selecionados</p>
+		<p>Total: R$ {{ quantidadeNumeros * 0.90 }}</p>
+		<button @click="comprar" :disabled="quantidadeNumeros === 0">Comprar</button>
+	  </div>
+	  
+  </div>
+  <script>
+new Vue({
+  el: '#app',
+  data: {
+    numeros: [], // Array que irá armazenar os números selecionados
+    quantidadeNumeros: 0 // Quantidade de números selecionados
+  },
+  
+  methods: {
+    selecionarNumero(numero) {
+      if (this.numeros.includes(numero)) {
+        // Se o número já foi selecionado, remova-o do array
+        this.numeros.splice(this.numeros.indexOf(numero), 1);
+        this.quantidadeNumeros--;
+      } else {
+        // Se o número ainda não foi selecionado, adicione-o ao array
+        this.numeros.push(numero);
+        this.quantidadeNumeros++;
+      }
+    },
+    comprar() {
+      // Aqui você pode adicionar a lógica para realizar a compra, como enviar um formulário para o servidor, etc.
+      alert(`Você comprou ${this.quantidadeNumeros} números por R$ ${this.quantidadeNumeros * 0.90}!`);
+    }
+  }
+})
+
+  </script>
+</body>
+</html>
